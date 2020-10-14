@@ -15,6 +15,7 @@
     "apollo-server-express": "^2.18.2",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^14.5.8",
@@ -32,8 +33,8 @@
   },
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "start": "ts-node src/index.ts",
-    "build": "tsc",
+    "start": "ts-node dist/index.js",
+    "build": "tsc -p .",
     "tslint": "tslint --project tsconfig.json",
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",

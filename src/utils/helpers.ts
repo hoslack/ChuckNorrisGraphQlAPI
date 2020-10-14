@@ -7,7 +7,7 @@ import { IContext } from './customTypes'
 import { config } from '../config'
 
 export const createAccessToken = (user: User) => {
-return sign({userId: user.id}, config.SECRET, {expiresIn: '60m'})
+return sign({userId: user.id}, config.SECRET, {expiresIn: '2d'})
 }
 
 export const createRefreshToken = (user: User) => {

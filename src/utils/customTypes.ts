@@ -7,6 +7,12 @@ export class signInResponse {
   accessToken: string
 }
 
+@ObjectType()
+export class signUpResponse {
+  @Field()
+  email: string
+}
+
 export interface IContext {
   req: Request;
   res: Response;

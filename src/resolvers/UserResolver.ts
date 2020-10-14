@@ -1,8 +1,8 @@
 import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql'
 import { hash, compare } from 'bcryptjs'
-import { UserError, AuthError } from '../utils/errors';
+import { UserError, AuthError, ConflictError } from '../utils/errors';
 import { User } from '../entity/User'
-import { signInResponse, IContext } from '../utils/customTypes'
+import { signInResponse, IContext, signUpResponse } from '../utils/customTypes'
 import { createAccessToken, createRefreshToken, isAuthenticated } from '../utils/helpers'
 
 @Resolver()
@@ -49,20 +49,39 @@ export class UserResolver {
     return response
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => signUpResponse)
   async signUp(
     @Arg('email') email: string,
     @Arg('password') password: string
-    )
+    ):Promise<signUpResponse>
   {
+    const user = await User.findOne({where:{email}})
+    if(user){
+      throw new ConflictError({
+        data: {
+          key: 'email'
+        },
+        internalData: {
+          error: 'The user email already exists, please sign in'
+        }
+      })
+    }
     const hashedPassword = await hash(password, 12)
     try{
-    await User.insert({email, password: hashedPassword})
+      await User.insert({email, password: hashedPassword})
     } catch (err){
-      console.log(err)
-      return false
+      throw new UserError({
+        data: {
+          key: 'internal Error '
+        },
+        internalData: {
+          error: 'An error occurred, please try again'
+        }
+      })
     }
-    return true
+    const response = new signUpResponse()
+    response.email = email
+    return response
   }
 
 }

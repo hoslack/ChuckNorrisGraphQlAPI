@@ -15,7 +15,7 @@ export class JokeResolver {
 
   @Mutation(() => jokeObject)
   @UseMiddleware(isAuthenticated)
-  async jokes(@Arg('category') category: string): Promise<jokeObject>{
+  async joke(@Arg('category') category: string): Promise<jokeObject>{
     const response = await axios.get(`https://api.chucknorris.io/jokes/random?category=${category}`);
 
     let resultObject = new jokeObject
