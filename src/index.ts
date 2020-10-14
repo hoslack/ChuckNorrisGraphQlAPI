@@ -20,6 +20,8 @@ import { JokeResolver } from './resolvers/JokeResolver'
       validate: true,
     }),
     context: ({ req, res }) => ({ req, res }),
+    introspection: true,
+    playground: true
   });
 
   apolloServer.applyMiddleware({ app, cors: true });
